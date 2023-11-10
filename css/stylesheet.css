@@ -1,0 +1,213 @@
+/* TODO: Check if all comments are necessary */
+/* TODO: Check if css-file is correctly organized. Follow guidelines from:
+    https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Organizing */
+
+/* VARIABLE DECLARATIONS */
+:root {
+    --main--color: rgb(0, 0, 0);
+    --main-color-opacity: rgba(0, 0, 0, 0.7);
+    --secondary-color: rgb(255, 255, 255);
+    --nav-text-color-deactive: rgba(255, 255, 255, 0.75);
+    --nav-height: 3.5rem;
+    --nav-side-space: 3rem;
+    --nav-hamburger-size: 3rem;
+    --nav-link-padding-height: 1rem;
+    --nav-link-padding-width: 1.6rem;
+    --nav-animation-timing: 0.6s ease-in-out;
+    --side-space: 2rem;
+
+/*Farger som kan brukes, slett farger som ikke blir brukt senere*/
+    --almond-color: rgb(234,221,202);
+    --grey-color: rgb(216,216,216);
+    --platinium-color: rgb(229,228,226);
+    --pale-silver-color:rgb(201,192,187);
+    --bone-color:rgb(227,218,201);
+    --dark-vanilla-color:rgb(209,190,168);
+}
+
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BASE STYLES */
+body {
+    /* Add padding to top of body == nav height */
+    padding-top: var(--nav-height, 3rem);
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+/* Scales all images */
+figure img {
+    max-width: 100%;
+    height: auto;
+}
+
+h1 {
+    margin-top: 0.67em;
+    margin-bottom: 0.67em;
+}
+
+h2 {
+    margin-top: 0.83em;
+    margin-bottom: 0.83em;
+}
+
+h3 {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+p {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+
+nav {
+    /* Nav is flexbox with items logo and navigation links/dropdown menu */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: var(--nav-height, 3rem);
+    background-color: var(--main--color, #000000);
+    /* Fixed position at top of page. High z-index to make sure navbar
+    always on top of page content */
+    position: fixed;
+    top: 0;
+    z-index: 9999;
+}
+
+.nav__img {
+    /* <img> inline by default. Make block to remove space under */
+    display: block;
+    height: var(--nav-height, 3rem);
+    margin-left: var(--nav-side-space, 2rem);
+}
+
+#nav__checkbox {
+    display: none;
+}
+
+.nav__hamburger {
+    display: block;
+    background-image: url(../img/icon/menu_inv.icon.png);
+    background-size: cover;
+    width: var(--nav-height, 3rem);
+    height: var(--nav-height, 3rem);
+    margin-right: var(--nav-side-space, 2rem);
+    cursor: pointer;
+}
+
+#nav__checkbox:checked ~ ul {
+    display: flex;
+    flex-direction: column;
+    /* reset position to right under hamburger */
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: var(--nav-height);
+  }
+
+.nav__list {
+    display: none;
+    justify-content: space-around;
+    align-items: center;
+    list-style-type: none;
+    min-height: 80vh;
+    min-width: 30vw;
+    background-color: var(--main-color-opacity);
+}
+
+.nav__list li a:link,
+.nav__list li a:visited {
+    color: var(--nav-text-color-deactive, #c4c4c4);
+    /*padding: var(--nav-link-padding-height) var(--nav-link-padding-width);
+    width: 50px;
+    height: 50px;*/
+    text-align: center;
+    text-decoration: none;
+    transition: all var(--nav-animation-timing, 0.5s);
+}
+
+.nav__list li a:hover,
+.nav__list li a.active {
+    color: var(--secondary-color, #ffffff);
+}
+
+
+/*A padding for readability*/
+main {
+    padding: var(--side-space, 1rem);
+}
+
+article{
+    padding-left: 2em;
+    padding-right: 2em;
+    border: 0.125em solid #000000;
+    grid-area: article;
+
+}
+
+aside {
+    padding-left: 2.5em;
+    border: 0.125em solid #000000;
+    background-color: #c4c4c4;
+    grid-area: aside;
+}
+
+/* STYLING FOOTER ELEMENTS */
+footer {
+    border: 0.125em solid #000000;
+    padding: var(--side-space, 3rem);
+    background-color: #c4c4c4;
+
+}
+
+footer > div {
+    color: var(--secondary-color, #ffffff);
+}
+
+
+
+/* Checks if the screen is larger than 700px then makes the main display into a grid*/
+@media(min-width: 700px) {
+
+    /*
+    .nav__list {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        list-style-type: none;
+        margin-right: var(--nav-side-space, 2rem);
+        overflow: hidden;
+    }
+
+    .nav__list li a:link,
+    .nav__list li a:visited {
+        color: var(--nav-text-color-deactive, #c4c4c4);
+        padding: var(--nav-link-padding-height) var(--nav-link-padding-width);
+        text-align: center;
+        text-decoration: none;
+        transition: all var(--nav-animation-timing, 0.5s);
+    }
+
+    .nav__list li a:hover,
+    .nav__list li a.active {
+        color: var(--secondary-color, #ffffff);
+    }
+    */
+    main {
+        display: grid;
+        width: 100%;
+        height: auto;
+        padding: 0px;
+        grid-template-columns: 70% 30%;
+        grid-template-areas:
+        "article aside"
+    }
+}

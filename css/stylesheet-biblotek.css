@@ -1,0 +1,261 @@
+/* TODO: Check if all comments are necessary */
+/* TODO: Check if css-file is correctly organized. Follow guidelines from:
+    https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Organizing */
+
+/* VARIABLE DECLARATIONS */
+:root {
+    --main--color: rgb(0, 0, 0);
+    --main-color-opacity: rgba(0, 0, 0, 0.7);
+    --secondary-color: rgb(255, 255, 255);
+    --nav-text-color-deactive: rgba(255, 255, 255, 0.75);
+    --nav-height: 3.5rem;
+    --nav-side-space: 3rem;
+    --nav-hamburger-size: 3rem;
+    --nav-link-padding-height: 1rem;
+    --nav-link-padding-width: 1.6rem;
+    --nav-animation-timing: 0.6s ease-in-out;
+    --side-space: 2rem;
+
+/*Farger som kan brukes, slett farger som ikke blir brukt senere*/
+    --almond-color: rgb(234,221,202);
+    --grey-color: rgb(216,216,216);
+    --platinium-color: rgb(229,228,226);
+    --pale-silver-color:rgb(201,192,187);
+    --bone-color:rgb(227,218,201);
+    --dark-vanilla-color:rgb(209,190,168);
+}
+
+/* RESET */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BASE STYLES */
+body {
+    /* Add padding to top of body == nav height */
+    padding-top: var(--nav-height, 3rem);
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+h1 {
+    margin-top: 0.67em;
+    margin-bottom: 0.67em;
+}
+
+h2 {
+    margin-top: 0.83em;
+    margin-bottom: 0.83em;
+}
+
+h3 {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+p {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+/* NORMAL STYLES */
+header > figure {
+    position: relative;
+}
+
+/* TODO: Consider using picture-element for different screen sizes */
+header > figure img {
+    /* Relative image-size for more responsive web design */
+    max-width: 100%;
+    height: auto;
+    /* 3s transition on opacity property when we hover */
+    transition: opacity 3s;
+}
+
+/* TODO: figcaption might not be right tag in this use */
+header > figure figcaption {
+    /* Positioned relative to ancestor <figure> */
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: opacity 3s;
+}
+
+header > figure:hover img {
+    opacity: 0.7;
+}
+
+header > figure:hover figcaption {
+    opacity: 1.0;
+}
+
+nav {
+    /* Nav is flexbox with items logo and navigation links/dropdown menu */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: var(--nav-height, 3rem);
+    background-color: var(--main--color, #000000);
+    /* Fixed position at top of page. High z-index to make sure navbar
+    always on top of page content */
+    position: fixed;
+    top: 0;
+    z-index: 9999;
+}
+
+.nav__img {
+    /* <img> inline by default. Make block to remove space under */
+    display: block;
+    height: var(--nav-height, 3rem);
+    margin-left: var(--nav-side-space, 2rem);
+}
+
+/* Hamburger animation code taken and modified from video:
+   https://www.youtube.com/watch?v=dAIVbLrAb_U. Code on gitub:
+   https://github.com/WebDevSimplified/css-only-hamburger-menu/blob/main/styles.css
+   Used pixel values in video to calculate the relative % instead of px */
+.nav__hamburger {
+    display: flex;
+    /* Make hamburger icon the last item in navigation flexbox */
+    order: 3;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: var(--nav-hamburger-size, 3rem);
+    height: var(--nav-hamburger-size, 3rem);
+    margin-right: var(--nav-side-space, 2rem);
+    gap: 10%;
+    cursor: pointer;
+}
+
+.nav__hamburger::before,
+.nav__hamburger::after,
+.nav__hamburger > input {
+    content: "";
+    width: 66%;
+    height: 10%;
+    position:relative;
+    /* 4% x --nav-hamburger-size */
+    border: 0.12rem solid var(--secondary-color, #ffffff);
+    border-radius: 50%;
+    transition: all var(--nav-animation-timing, 0.5s);
+}
+
+.nav__hamburger > input {
+    appearance: none;
+    pointer-events: none;
+}
+
+.nav__hamburger:has(input:checked)::before {
+    top: 20%;
+    transform: rotate(45deg);
+    background-color: var(--secondary-color, #ffffff);
+}
+
+.nav__hamburger > input:checked {
+    opacity: 0;
+    width: 0;
+}
+
+.nav__hamburger:has(input:checked)::after {
+    bottom: 20%;
+    transform: rotate(-45deg);
+    background-color: var(--secondary-color, #ffffff);
+}
+
+.nav__hamburger:has(input:checked) + .nav__list {
+    display: flex;
+    flex-direction: column;
+    /* reset position to right under hamburger */
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: var(--nav-height);
+}
+
+.nav__list {
+    display: none;
+    justify-content: space-around;
+    align-items: center;
+    list-style-type: none;
+    min-height: 80vh;
+    min-width: 30vw;
+    background-color: var(--main-color-opacity);
+}
+
+.nav__list li a:link,
+.nav__list li a:visited {
+    color: var(--nav-text-color-deactive, #c4c4c4);
+    /*padding: var(--nav-link-padding-height) var(--nav-link-padding-width);
+    width: 50px;
+    height: 50px;*/
+    text-align: center;
+    text-decoration: none;
+    transition: all var(--nav-animation-timing, 0.5s);
+}
+
+.nav__list li a:hover,
+.nav__list li a.active {
+    color: var(--secondary-color, #ffffff);
+}
+
+/* PC SCREEN VERSION */
+/*
+.nav__list {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    list-style-type: none;
+    margin-right: var(--nav-side-space, 2rem);
+    overflow: hidden;
+}
+
+.nav__list li a:link,
+.nav__list li a:visited {
+    color: var(--nav-text-color-deactive, #c4c4c4);
+    padding: var(--nav-link-padding-height) var(--nav-link-padding-width);
+    text-align: center;
+    text-decoration: none;
+    transition: all var(--nav-animation-timing, 0.5s);
+}
+
+.nav__list li a:hover,
+.nav__list li a.active {
+    color: var(--secondary-color, #ffffff);
+}*/
+
+
+main {
+    padding: var(--side-space, 1rem);
+}
+
+aside {
+    background-color:var(--bone-color);
+}
+
+/* STYLING FOOTER ELEMENTS */
+footer {
+    padding: var(--side-space, 3rem);
+    background-color: var(--main--color, #000000);
+}
+
+footer > div {
+    color: var(--secondary-color, #ffffff);
+}
+
+
+/* MEDIA QUERIES */
+/*@media(max-width :  700px) {
+    nav {
+        display: flex;
+    }
+
+
+}*/
