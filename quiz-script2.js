@@ -1,21 +1,33 @@
 let round = 0;
 let score = 0;
 let started = false;
+let gameEnd = false;
+
+const textOutArrow = (string) => document.getElementById("textOut").innerText = string;
+const altOutArrow = (string) => document.getElementById("altOut").innerHTML = string;
+
+const buttonLabel = (string) => document.getElementById("butt").value = string;
 
 function clickButton() {
+
     if(started) {
-        if((!(qArray[round] == undefined))){
+        if(!(qArray[round] == undefined)){
             hideButt();
             showQuestion();
         }
         if(qArray[round] == undefined) {
-            hideButt();
-            endOfQuiz();
+            if(gameEnd){
+                location.reload();
+            }
+            if(!gameEnd) {
+                gameEnd = true;
+                buttonLabel("Start again!")
+                endOfQuiz();
+            }
         }
-
     }
     if(!started) {
-       document.getElementById("butt").value = "Next question";
+       buttonLabel("Next question");
        showQuestion();
        hideButt();
        started = true;
@@ -44,7 +56,6 @@ function checkAnswer(a){
         out += "Correct!";
     }
     if (a === 0) {
-        score --;
         out += "Wrong!"
     }
     return out;
@@ -59,26 +70,41 @@ function showQuestion() {
         "<li>" + qArray[round].alt2 + "</li>" +
         "<li>" + qArray[round].alt3 + "</li>";
 
-    document.getElementById("textOut").innerText = textOut;
-    document.getElementById("altOut").innerHTML = altOut;
+    textOutArrow(textOut);
+    altOutArrow(altOut);
 }
 
 function seeScore() {
     const a = select();
     const out = checkAnswer(a);
 
-    document.getElementById("altOut").innerHTML = "";
-    document.getElementById("textOut").innerText = "Your answer is " + out + "\n" + "Your score is: " + score;
+    altOutArrow("");
+    textOutArrow("Your answer is " + out + "\n" + "Your score is: " + score);
     round ++;
     showButt();
 }
 
 function endOfQuiz(){
+    let outText = "";
     let out = "";
-    out += "No more questions! \nYou got " + score + " points! Good Job!";
+    const percent = (score / qArray.length) * 100;
 
-    document.getElementById("textOut").innerText = out;
-    document.getElementById("altOut").innerHTML = "";
+    if(percent === 100) {
+        out += "Perfect Job!"
+    }
+    if(100 > percent && percent >= 50) {
+        out += "Great job!"
+    }
+    if(50 > percent  && percent > 0) {
+        out += "Keep trying!"
+    }
+    if(percent === 0) {
+        out += "Pathetic excuse for a human!"
+    }
+
+    outText += "No more questions! \nYou got " + Math.round(percent) + "% of the questions right" + "\n" + out;
+    altOutArrow("");
+    textOutArrow(outText);
 
 }
 
